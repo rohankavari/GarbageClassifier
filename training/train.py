@@ -4,7 +4,7 @@ from torch.optim import Adam
 from torch.utils.data import DataLoader, random_split
 from torchvision import transforms
 from torchvision.datasets import ImageFolder
-
+import torch
 from model import GarbageClassifier
 
 transform = transforms.Compose([
@@ -33,8 +33,9 @@ images, labels = dataiter.next()
 
 EPOCHS = 10
 LR = 0.01
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-model = GarbageClassifier()
+model = GarbageClassifier().to(device)
 optimizer = Adam(model.parameters(), lr=LR,)
 criterion = nn.CrossEntropyLoss()
 
@@ -42,7 +43,7 @@ for epoch in range(EPOCHS):
     step = 0
     running_loss = []
     for images, labels in train_dataloader:
-
+        images, labels=images.to(device), labels.to(device)
         optimizer.zero_grad()
         pred_labels = model(images)
         loss = criterion(pred_labels, labels)
