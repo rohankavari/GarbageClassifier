@@ -31,7 +31,7 @@ dataiter = iter(train_dataloader)
 images, labels = dataiter.next()
 # print(images[2].size())
 
-EPOCHS = 10
+EPOCHS = 1
 LR = 0.01
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -43,7 +43,7 @@ for epoch in range(EPOCHS):
     step = 0
     running_loss = []
     for images, labels in train_dataloader:
-        images, labels=images.to(device), labels.to(device)
+        images, labels = images.to(device), labels.to(device)
         optimizer.zero_grad()
         pred_labels = model(images)
         loss = criterion(pred_labels, labels)
@@ -53,4 +53,6 @@ for epoch in range(EPOCHS):
         running_loss.append(loss.item())
 
         step += 1
-    print(f"Epoch:{epoch}, loss:{np.mean(running_loss)}")
+    print(f"Epoch:{epoch}, loss:{round(np.mean(running_loss),3)}")
+
+# torch.save(model.state_dict(), f"./models/{}")
