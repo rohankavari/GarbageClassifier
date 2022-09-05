@@ -6,7 +6,7 @@ from torchvision import transforms
 from torchvision.datasets import ImageFolder
 import torch
 from model import GarbageClassifier
-
+import time
 transform = transforms.Compose([
     transforms.ToTensor()
 ])
@@ -42,6 +42,7 @@ criterion = nn.CrossEntropyLoss()
 for epoch in range(EPOCHS):
     step = 0
     running_loss = []
+    st=time.perf_counter()
     for images, labels in train_dataloader:
         images, labels = images.to(device), labels.to(device)
         optimizer.zero_grad()
@@ -53,6 +54,6 @@ for epoch in range(EPOCHS):
         running_loss.append(loss.item())
 
         step += 1
-    print(f"Epoch:{epoch}, loss:{round(np.mean(running_loss),3)}")
+    print(f"Epoch:{epoch}, loss:{round(np.mean(running_loss),3)},time:{time.perf_counter()-st}")
 
-# torch.save(model.state_dict(), f"./models/{}")
+torch.save(model.state_dict(), f"./models/final-at-{round(np.mean(running_loss),3)}.pt")
