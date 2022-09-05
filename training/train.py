@@ -31,14 +31,14 @@ dataiter = iter(train_dataloader)
 images, labels = dataiter.next()
 # print(images[2].size())
 
-EPOCHS = 1
+EPOCHS = 10
 LR = 0.01
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 model = GarbageClassifier().to(device)
 optimizer = Adam(model.parameters(), lr=LR,)
 criterion = nn.CrossEntropyLoss()
-
+print(f"training starting on {device}")
 for epoch in range(EPOCHS):
     step = 0
     running_loss = []
@@ -54,6 +54,6 @@ for epoch in range(EPOCHS):
         running_loss.append(loss.item())
 
         step += 1
-    print(f"Epoch:{epoch}, loss:{round(np.mean(running_loss),3)},time:{time.perf_counter()-st}")
+    print(f"Epoch:{epoch}, loss:{round(np.mean(running_loss),3)},time:{time.perf_counter()-st} s")
 
-torch.save(model.state_dict(), f"./models/final-at-{round(np.mean(running_loss),3)}.pt")
+torch.save(model.state_dict(), f"./training/models/final-at-{round(np.mean(running_loss),3)}.pt")
