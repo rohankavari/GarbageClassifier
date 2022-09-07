@@ -26,10 +26,17 @@ class GarbageClassifier(nn.Module):
 if __name__ == "__main__":
     from PIL import Image
     from torchvision import transforms
-    a = torch.rand((32, 3, 384, 512))
+
     model = GarbageClassifier()
     model.load_state_dict(torch.load("./training/models/final-at-1.726.pt",map_location=torch.device('cpu')))
+
+    a = torch.rand((1, 3, 384, 512))
+    print(model(a))
+
     img = Image.open("/home/conmove/Projects/homeprj/GarbageClassifier/archive/Garbage classification/Garbage classification/metal/metal1.jpg")
     convert_tensor = transforms.ToTensor()
-    
-    print(model(convert_tensor(img)))
+    print(convert_tensor(img).shape)
+    b=torch.unsqueeze(convert_tensor(img), dim=0)
+    print(b.shape)
+    # print(model(a))
+    print(model(b))
