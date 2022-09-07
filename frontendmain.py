@@ -22,17 +22,18 @@ STYLES = {
 st.set_option("deprecation.showfileUploaderEncoding", False)
 
 # defines an h1 header
-st.title("Style transfer web app")
+st.title("Garbage Classifier App")
 
 # displays a file uploader widget
 image = st.file_uploader("Choose an image")
 
 # displays a button
-if st.button("Style Transfer"):
-    if image is not None :
+if st.button("Tell me what it is!"):
+    if image is not None:
         files = {"file": image.getvalue()}
         # print(image.getvalue())
         res = requests.post(f"http://0.0.0.0:8000/predict", files=files)
-        img_path = res.json()
+        res = res.json()
+        print(res)
         # image = Image.open(img_path.get("name"))
         # st.image(image, width=500)
